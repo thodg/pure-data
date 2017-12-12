@@ -17,7 +17,7 @@
 
 AUTOMAKE_OPTIONS = foreign
 AM_CFLAGS = 
-AM_CPPFLAGS += -I./ASIOSDK2/host -I./ASIOSDK2/host/pc -I./ASIOSDK2/common
+AM_CPPFLAGS += -I$(srcdir)/ASIOSDK2/host -I$(srcdir)/ASIOSDK2/host/pc -I$(srcdir)/ASIOSDK2/common
 
 #########################################
 ##### Files, Binaries, & Libs #####
