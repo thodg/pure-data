@@ -341,12 +341,15 @@ test x$WINDOWS = xyes || mmio=no
 AC_ARG_ENABLE([asio],
     [AS_HELP_STRING([--enable-asio], [use ASIO audio driver])],
     [asio=$enableval], [asio=no])
-if test x$asio = xyes ; then
-    AC_CHECK_FILE([asio/ASIOSDK2/common/asio.h], [asio=yes], [asio=no])
-    if [ test x$windows = xyes ] && [ test x$asio = xno ] ; then
-        AC_MSG_ERROR([ASIO SDK not found! You need to download it from: http://www.steinberg.net/en/company/developers.html])
-    fi
-fi
+AS_IF([ test "x${asio}" = "xyes"],
+    AC_MSG_CHECKING([ASIO])
+        AS_IF([ test -f "${srcdir}/asio/ASIOSDK2/common/asio.h"],
+                [asio="yes"],
+                asio="no"
+                AS_IF([ test "x${windows}" = xyes ],
+                        AC_MSG_ERROR([ASIO SDK not found! You need to download it from: http://www.steinberg.net/en/company/developers.html])))
+    AC_MSG_RESULT([$asio]))
+
 
 ##### PortAudio #####
 AC_ARG_ENABLE([portaudio],
@@ -447,7 +450,8 @@ AS_IF([test x$mmio = xyes], [audio_backends="MMIO ${audio_backends}"])
 dnl AS_IF([test x$mmio = xyes], [midi_backends="MMIO ${midi_backends}"])
 
 ##### ASIO #####
-AM_CONDITIONAL(ASIO, test x$asio = xyes)
+AM_CONDITIONAL(ASIO, test "x${asio}" = "xyes")
+AS_IF([test x$asio = xyes], [audio_backends="ASIO ${audio_backends}"])
 
 ##### CoreAudio #####
 # portaudio doesn't work with iPhone, so don't bother with CoreAudio
