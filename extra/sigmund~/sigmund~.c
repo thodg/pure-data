@@ -41,7 +41,7 @@ for example, defines this in the file d_fft_mayer.c or d_fft_fftsg.c. */
 #include <string.h>
 #ifdef _WIN32
 #include <malloc.h>
-#elif ! defined(_MSC_VER)
+#elif ! defined(_MSC_VER) && HAVE_ALLOCA_H
 #include <alloca.h>
 #endif
 #include <stdlib.h>
